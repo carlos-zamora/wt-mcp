@@ -1,6 +1,9 @@
 # wt-mcp
 
-An [MCP](https://modelcontextprotocol.io/) server that lets AI assistants manage [Windows Terminal](https://github.com/microsoft/terminal) configuration. Built with C# and the [ModelContextProtocol C# SDK](https://www.nuget.org/packages/ModelContextProtocol).
+An [MCP](https://modelcontextprotocol.io/) server that helps reference and manage [Windows Terminal](https://github.com/microsoft/terminal) settings and other terminal-related customizations. Built with C# and the [ModelContextProtocol C# SDK](https://www.nuget.org/packages/ModelContextProtocol).
+
+> [!CAUTION]
+> This tool is powered by AI, which can make mistakes. Always review proposed changes before applying them.
 
 ## Tools
 
@@ -14,64 +17,12 @@ An [MCP](https://modelcontextprotocol.io/) server that lets AI assistants manage
 
 All mutating tools follow a **preview-then-apply** pattern — a `Preview*` call returns a unified diff for the user to review, then the corresponding write call applies the change.
 
-## Supported platforms
+## Setup
 
-The server is built as a self-contained application (no .NET runtime required on the target machine) for:
+Add the following to your MCP configuration:
 
-`win-x64` · `win-arm64` · `osx-arm64` · `linux-x64` · `linux-arm64` · `linux-musl-x64`
-
-To add platforms, update `<RuntimeIdentifiers>` in `wt-mcp.csproj`.
-
-## Developing locally
-
-To test this MCP server from source code (locally) without using a built MCP server package, you can configure your IDE to run the project directly using `dotnet run`.
-
-```json
-{
-  "servers": {
-    "wt-mcp": {
-      "type": "stdio",
-      "command": "dotnet",
-      "args": [
-        "run",
-        "--project",
-        "<PATH TO PROJECT DIRECTORY>"
-      ]
-    }
-  }
-}
-```
-
-Refer to the VS Code or Visual Studio documentation for more information on configuring and using MCP servers:
-
-- [Use MCP servers in VS Code (Preview)](https://code.visualstudio.com/docs/copilot/chat/mcp-servers)
-- [Use MCP servers in Visual Studio (Preview)](https://learn.microsoft.com/visualstudio/ide/mcp-servers)
-
-## Try it out
-
-Once configured, try asking Copilot Chat things like:
-
-- *"Change my Windows Terminal theme to Light"*
-- *"Create a fragment with a new SSH profile"*
-- *"What's my Oh My Posh theme? Change the git segment color to blue"*
-- *"Set up shell integration for my terminal"*
-- *"Add a snippet to restart the dev server in this project"*
-
-## Publishing to NuGet.org
-
-Before publishing, update the package metadata in `wt-mcp.csproj` (`<PackageId>`, `<Description>`, etc.) and the server declaration in `.mcp/server.json`. See [configuring inputs](https://aka.ms/nuget/mcp/guide/configuring-inputs) for details.
-
-1. Run `dotnet pack -c Release` to create the NuGet package.
-2. Publish with `dotnet nuget push bin/Release/*.nupkg --api-key <your-api-key> --source https://api.nuget.org/v3/index.json`
-
-## Using from NuGet.org
-
-Once published, configure the server in your IDE:
-
-- **VS Code**: Create a `<WORKSPACE DIRECTORY>/.vscode/mcp.json` file
-- **Visual Studio**: Create a `<SOLUTION DIRECTORY>\.mcp.json` file
-
-For both VS Code and Visual Studio, the configuration file uses the following server definition:
+- **VS Code**: `<WORKSPACE>/.vscode/mcp.json`
+- **Visual Studio**: `<SOLUTION>\.mcp.json`
 
 ```json
 {
@@ -87,11 +38,48 @@ For both VS Code and Visual Studio, the configuration file uses the following se
 
 The `--prerelease` flag is required while `wt-mcp` is in beta. Once a stable version is published, users can drop it and just use `["wt-mcp", "--yes"]`. To pin a specific version, use `"wt-mcp@0.1.0-beta"` instead.
 
+No .NET runtime is required — the package is self-contained.
+
+## Try it out
+
+Once configured, try asking Copilot Chat things like:
+
+- *"Change my Windows Terminal theme to Light"*
+- *"Create a fragment with a new SSH profile"*
+- *"What's my Oh My Posh theme? Change the git segment color to blue"*
+- *"Set up shell integration for my terminal"*
+- *"Add a snippet to restart the dev server in this project"*
+
+## Developing locally
+
+To run the MCP server from source, configure your IDE to use `dotnet run` instead of `dnx`:
+
+```json
+{
+  "servers": {
+    "wt-mcp": {
+      "type": "stdio",
+      "command": "dotnet",
+      "args": ["run", "--project", "<PATH TO PROJECT DIRECTORY>"]
+    }
+  }
+}
+```
+
+This requires the .NET 10 SDK. See the [VS Code](https://code.visualstudio.com/docs/copilot/chat/mcp-servers) or [Visual Studio](https://learn.microsoft.com/visualstudio/ide/mcp-servers) MCP docs for more details.
+
+## Publishing to NuGet.org
+
+```bash
+dotnet pack -c Release
+dotnet nuget push bin/Release/*.nupkg --api-key <your-api-key> --source https://api.nuget.org/v3/index.json
+```
+
+Package metadata is configured in `wt-mcp.csproj` and the server declaration in `.mcp/server.json`.
+
 ## More information
 
-.NET MCP servers use the [ModelContextProtocol](https://www.nuget.org/packages/ModelContextProtocol) C# SDK. For more information about MCP:
-
-- [Official Documentation](https://modelcontextprotocol.io/)
-- [Protocol Specification](https://spec.modelcontextprotocol.io/)
-- [GitHub Organization](https://github.com/modelcontextprotocol)
+- [MCP Documentation](https://modelcontextprotocol.io/)
+- [MCP Specification](https://spec.modelcontextprotocol.io/)
 - [MCP C# SDK](https://modelcontextprotocol.github.io/csharp-sdk)
+- [MCP GitHub Organization](https://github.com/modelcontextprotocol)

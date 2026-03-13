@@ -19,21 +19,28 @@ All mutating tools follow a **preview-then-apply** pattern — a `Preview*` call
 
 ## Setup
 
-Add the following to your MCP configuration:
+### GitHub Copilot CLI
 
-- **VS Code**: `<WORKSPACE>/.vscode/mcp.json`
-- **Visual Studio**: `<SOLUTION>\.mcp.json`
+Add `wt-mcp` to `~/.copilot/mcp-config.json`:
 
 ```json
 {
-  "servers": {
+  "mcpServers": {
     "wt-mcp": {
       "type": "stdio",
       "command": "dnx",
-      "args": ["wt-mcp", "--prerelease", "--yes"]
+      "args": ["wt-mcp", "--prerelease", "--yes", "--source", "https://api.nuget.org/v3/index.json"]
     }
   }
 }
+```
+
+Restart the CLI for changes to take effect.
+
+### Claude Code
+
+```bash
+claude mcp add wt-mcp -- dnx wt-mcp --prerelease --yes --source https://api.nuget.org/v3/index.json
 ```
 
 The `--prerelease` flag is required while `wt-mcp` is in beta. Once a stable version is published, users can drop it and just use `["wt-mcp", "--yes"]`. To pin a specific version, use `"wt-mcp@0.1.0-beta"` instead.

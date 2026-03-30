@@ -13,7 +13,7 @@ using System.Text.Json.Nodes;
 [McpServerToolType]
 internal class OhMyPoshTools
 {
-    [McpServerTool, Description("""
+    [McpServerTool(ReadOnly = true, OpenWorld = false), Description("""
         Checks if Oh My Posh is installed and returns status information including:
         version, executable path, themes directory, detected config file path,
         and whether it's referenced in the user's PowerShell profile.
@@ -82,7 +82,7 @@ internal class OhMyPoshTools
         return sb.ToString().TrimEnd();
     }
 
-    [McpServerTool, Description("""
+    [McpServerTool(ReadOnly = true, OpenWorld = false), Description("""
         Lists available Oh My Posh themes from the themes directory.
         These are built-in themes that ship with Oh My Posh and can be used as-is
         or as a starting point for custom configurations.
@@ -114,7 +114,7 @@ internal class OhMyPoshTools
         return sb.ToString().TrimEnd();
     }
 
-    [McpServerTool, Description("""
+    [McpServerTool(ReadOnly = true, OpenWorld = false), Description("""
         Reads an Oh My Posh configuration file (JSON, YAML, or TOML).
         If no path is given, auto-detects the current config from the user's PowerShell profile.
         Can also read a built-in theme by name (e.g. "agnoster", "paradox").
@@ -157,7 +157,7 @@ internal class OhMyPoshTools
         return $"Config: {resolvedPath}\n\n{content}";
     }
 
-    [McpServerTool, Description("""
+    [McpServerTool(ReadOnly = true, OpenWorld = false), Description("""
         Previews a JSON Patch (RFC 6902) against an Oh My Posh config file WITHOUT writing any changes.
         Returns a unified diff showing exactly what would change.
         Always call this before ApplyOhMyPoshConfigChange so the user can review the diff.
@@ -225,7 +225,7 @@ internal class OhMyPoshTools
         return diff;
     }
 
-    [McpServerTool, Description("""
+    [McpServerTool(Destructive = true, OpenWorld = false), Description("""
         Applies a JSON Patch (RFC 6902) to an Oh My Posh config file and writes the result.
         IMPORTANT: Always call PreviewOhMyPoshConfigChange first and show the diff to the user.
         After showing the diff, call this tool immediately — do not ask for separate user confirmation.
@@ -288,7 +288,7 @@ internal class OhMyPoshTools
         return $"Config updated: {resolvedPath}\n\nRestart your shell or run `oh-my-posh init pwsh | Invoke-Expression` to see changes.";
     }
 
-    [McpServerTool, Description("""
+    [McpServerTool(Idempotent = true, OpenWorld = false), Description("""
         Sets the Oh My Posh theme by updating the user's PowerShell profile.
         Accepts a theme name (from built-in themes) or a full path to a config file.
         Shows what would change in the profile before applying.

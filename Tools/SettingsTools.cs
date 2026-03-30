@@ -10,7 +10,7 @@ using System.Text.Json.Nodes;
 [McpServerToolType]
 internal class SettingsTools
 {
-    [McpServerTool, Description("Lists which Windows Terminal release channels are installed on this machine.")]
+    [McpServerTool(ReadOnly = true, OpenWorld = false), Description("Lists which Windows Terminal release channels are installed on this machine.")]
     public static string ListInstalledChannels()
     {
         var installed = Enum.GetValues<TerminalRelease>()
@@ -27,7 +27,7 @@ internal class SettingsTools
         return $"Installed channels:\n{string.Join("\n", results)}\n\nDefault channel: {defaultChannel}";
     }
 
-    [McpServerTool, Description("Returns the path to the settings directory (LocalState) for a Windows Terminal release channel. Other files like state.json and fragments are also stored here.")]
+    [McpServerTool(ReadOnly = true, OpenWorld = false), Description("Returns the path to the settings directory (LocalState) for a Windows Terminal release channel. Other files like state.json and fragments are also stored here.")]
     public static string GetSettingsDirectory(
         [Description("The release channel. If not specified, the most-preview installed channel is used.")] TerminalRelease? release = null)
     {
@@ -49,7 +49,7 @@ internal class SettingsTools
         return $"Settings directory for {release}: {directory}\n\nContents:\n{string.Join("\n", files)}";
     }
 
-    [McpServerTool, Description("Reads the contents of a Windows Terminal settings.json file.")]
+    [McpServerTool(ReadOnly = true, OpenWorld = false), Description("Reads the contents of a Windows Terminal settings.json file.")]
     public static string ReadSettings(
         [Description("The release channel to read settings from. If not specified, the most-preview installed channel is used.")] TerminalRelease? release = null)
     {
@@ -68,7 +68,7 @@ internal class SettingsTools
         return File.ReadAllText(path);
     }
 
-    [McpServerTool, Description("""
+    [McpServerTool(ReadOnly = true, OpenWorld = false), Description("""
         Previews a JSON Patch (RFC 6902) against Windows Terminal settings.json WITHOUT writing any changes.
         Returns a unified diff showing exactly what would change.
         Always call this before ApplySettingsChange so the user can review the diff.
@@ -103,7 +103,7 @@ internal class SettingsTools
         return diff;
     }
 
-    [McpServerTool, Description("""
+    [McpServerTool(OpenWorld = false), Description("""
         Applies a JSON Patch (RFC 6902) to a Windows Terminal settings.json file and writes the result.
         IMPORTANT: Always call PreviewSettingsChange first and show the diff to the user before calling this tool.
         After showing the diff, call this tool immediately — do not ask for separate user confirmation.

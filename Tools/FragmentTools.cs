@@ -12,7 +12,7 @@ internal class FragmentTools
 {
     private const string RestartNotice =
         "\n\n⚠ Windows Terminal must be fully restarted for fragment changes to take effect.";
-    [McpServerTool, Description("""
+    [McpServerTool(ReadOnly = true, OpenWorld = false), Description("""
         Lists installed Windows Terminal fragment extensions.
         Fragments are found in user-scope (%LOCALAPPDATA%\Microsoft\Windows Terminal\Fragments)
         and machine-scope (%PROGRAMDATA%\Microsoft\Windows Terminal\Fragments) directories.
@@ -51,7 +51,7 @@ internal class FragmentTools
         return sb.ToString().TrimEnd();
     }
 
-    [McpServerTool, Description("""
+    [McpServerTool(ReadOnly = true, OpenWorld = false), Description("""
         Reads the contents of fragment extension files for an app.
         If fileName is provided, reads that specific file. If omitted, reads all fragment files for the app.
         """)]
@@ -90,7 +90,7 @@ internal class FragmentTools
         return sb.ToString().TrimEnd();
     }
 
-    [McpServerTool, Description("""
+    [McpServerTool(ReadOnly = true, OpenWorld = false), Description("""
         Previews creating a new fragment extension WITHOUT writing any changes.
         Returns the formatted fragment content and validation results.
         Always call this before CreateFragment so the user can review the content.
@@ -134,7 +134,7 @@ internal class FragmentTools
         return sb.ToString().TrimEnd();
     }
 
-    [McpServerTool, Description("""
+    [McpServerTool(OpenWorld = false), Description("""
         Creates a new fragment extension file.
         IMPORTANT: Always call PreviewCreateFragment first and show the preview to the user.
         After showing the preview, call this tool immediately — do not ask for separate user confirmation.
@@ -159,7 +159,7 @@ internal class FragmentTools
         return $"Fragment created: {path}{RestartNotice}";
     }
 
-    [McpServerTool, Description("""
+    [McpServerTool(ReadOnly = true, OpenWorld = false), Description("""
         Previews changes to an existing fragment extension WITHOUT writing any changes.
         Returns a unified diff showing exactly what would change.
         Always call this before UpdateFragment so the user can review the diff.
@@ -213,7 +213,7 @@ internal class FragmentTools
         return sb.ToString().TrimEnd();
     }
 
-    [McpServerTool, Description("""
+    [McpServerTool(OpenWorld = false), Description("""
         Updates an existing fragment extension file with new content.
         IMPORTANT: Always call PreviewUpdateFragment first and show the diff to the user.
         After showing the diff, call this tool immediately — do not ask for separate user confirmation.
@@ -244,7 +244,7 @@ internal class FragmentTools
         return $"Fragment updated: {path}{RestartNotice}";
     }
 
-    [McpServerTool, Description("""
+    [McpServerTool(Destructive = true, OpenWorld = false), Description("""
         Deletes a fragment extension file, or all fragments for an app if no fileName is specified.
         This action is not reversible (though .bak files may exist from prior updates).
         """)]

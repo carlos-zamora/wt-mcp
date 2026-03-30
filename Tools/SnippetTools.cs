@@ -26,7 +26,7 @@ internal class SnippetTools
     private const string SettingsReloadNote =
         "Available in the Suggestions UI, Snippets Pane, and Command Palette. " +
         "Settings changes are picked up automatically.";
-    [McpServerTool, Description("""
+    [McpServerTool(ReadOnly = true, OpenWorld = false), Description("""
         Reads a wt.json snippet file. If no path is given, searches the current directory
         and parent directories (same lookup behavior as Windows Terminal).
         Returns the file content and its resolved location.
@@ -61,7 +61,7 @@ internal class SnippetTools
         return $"File: {resolvedPath}\n\n{content}";
     }
 
-    [McpServerTool, Description("""
+    [McpServerTool(ReadOnly = true, OpenWorld = false), Description("""
         Previews creating a new wt.json snippet file WITHOUT writing any changes.
         Returns the formatted content and validation results.
         Always call this before CreateWtJson so the user can review the content.
@@ -106,7 +106,7 @@ internal class SnippetTools
         return sb.ToString().TrimEnd();
     }
 
-    [McpServerTool, Description("""
+    [McpServerTool(OpenWorld = false), Description("""
         Creates a new wt.json snippet file.
         IMPORTANT: Always call PreviewCreateWtJson first and show the preview to the user.
         After showing the preview, call this tool immediately — do not ask for separate user confirmation.
@@ -131,7 +131,7 @@ internal class SnippetTools
         return $"Created: {path}\n\n{WtJsonReloadNote}";
     }
 
-    [McpServerTool, Description("""
+    [McpServerTool(ReadOnly = true, OpenWorld = false), Description("""
         Previews changes to an existing wt.json file WITHOUT writing any changes.
         Returns a unified diff showing exactly what would change.
         Always call this before UpdateWtJson so the user can review the diff.
@@ -186,7 +186,7 @@ internal class SnippetTools
         return sb.ToString().TrimEnd();
     }
 
-    [McpServerTool, Description("""
+    [McpServerTool(OpenWorld = false), Description("""
         Updates an existing wt.json file with new content.
         IMPORTANT: Always call PreviewUpdateWtJson first and show the diff to the user.
         After showing the diff, call this tool immediately — do not ask for separate user confirmation.
@@ -217,7 +217,7 @@ internal class SnippetTools
         return $"Updated: {resolvedPath}\n\n{WtJsonReloadNote}";
     }
 
-    [McpServerTool, Description("""
+    [McpServerTool(OpenWorld = false), Description("""
         Adds a single snippet to a wt.json file. If no wt.json exists in the target directory,
         creates a new one. If one exists, adds the snippet to the existing snippets array.
         Uses the preview/apply pattern: shows what would change, then applies.

@@ -11,7 +11,7 @@ using System.Text.Json.Nodes;
 [McpServerToolType]
 internal class ShellIntegrationTools
 {
-    [McpServerTool, Description("""
+    [McpServerTool(ReadOnly = true, OpenWorld = false), Description("""
         Reports the current state of shell integration for Windows Terminal.
         Checks both terminal-side settings (autoMarkPrompts, showMarksOnScrollbar)
         and shell-side configuration (PowerShell profile, Oh My Posh shell_integration).
@@ -459,7 +459,7 @@ internal class ShellIntegrationTools
         return result is not null && result.ExitCode == 0 ? result.Stdout : null;
     }
 
-    [McpServerTool, Description("""
+    [McpServerTool(ReadOnly = true, OpenWorld = false), Description("""
         Returns the shell integration code snippet for a given shell.
         The snippet adds OSC 133 (FinalTerm) escape sequences that let Windows Terminal
         understand prompt boundaries, track command status, and enable features like
@@ -528,7 +528,7 @@ internal class ShellIntegrationTools
 
     private const string ShellIntegrationMarker = "# Shell integration for Windows Terminal";
 
-    [McpServerTool, Description("""
+    [McpServerTool(Destructive = false, Idempotent = true, OpenWorld = false), Description("""
         Enables shell integration by writing the appropriate snippet to a shell profile.
         Handles PowerShell, bash, zsh (Windows or WSL), and Oh My Posh.
         Idempotent — will not add the snippet if shell integration is already detected.

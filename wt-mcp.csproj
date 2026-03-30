@@ -21,7 +21,7 @@
     <!-- Set recommended package metadata -->
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <PackageId>wt-mcp</PackageId>
-    <PackageVersion>0.1.0-beta</PackageVersion>
+    <PackageVersion>0.1.1-beta</PackageVersion>
     <PackageTags>AI; MCP; server; stdio; Windows Terminal; terminal; settings; fragments; Oh My Posh; shell integration; snippets</PackageTags>
     <Description>An MCP server that helps reference and manage Windows Terminal settings and other terminal-related customizations.</Description>
     <Authors>carlos-zamora</Authors>
